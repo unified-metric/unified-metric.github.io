@@ -54,6 +54,7 @@
     <script src="static/js/bulma-carousel.min.js"></script>
     <script src="static/js/bulma-slider.min.js"></script>
     <script src="static/js/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <section class="hero">
@@ -70,23 +71,24 @@
                 <span class="author-block">
                   <a href="FIRST AUTHOR PERSONAL LINK" target="_blank"
                     >Chunsan Hong</a
-                  ><sup>*</sup>,</span
+                  ><sup>1*</sup>,</span
                 >
                 <span class="author-block">
                   <a href="SECOND AUTHOR PERSONAL LINK" target="_blank"
                     >ByungHee Cha</a
-                  ><sup>*</sup>,</span
+                  ><sup>2*</sup>,</span
                 >
                 <span class="author-block">
                   <a href="THIRD AUTHOR PERSONAL LINK" target="_blank"
                     >Taehyun Oh</a
-                  >
+                  ><sup>3</sup>
                 </span>
               </div>
 
               <div class="is-size-5 publication-authors">
                 <span class="author-block"
-                  >Institution Name<br />ICLR 2024 (spotlight)</span
+                  >KAIST<sup>1</sup> &nbsp Seoul National University<sup>2</sup>
+                  &nbsp POSTECH<sup>3</sup><br />ICLR 2024 (spotlight)</span
                 >
                 <span class="eql-cntrb"
                   ><small
@@ -164,15 +166,17 @@
     <section class="hero teaser">
       <div class="container is-max-desktop">
         <div class="hero-body">
-          <video poster="" id="tree" autoplay controls muted loop height="100%">
-            <!-- Your video here -->
-            <source src="static/videos/banner_video.mp4" type="video/mp4" />
-          </video>
+          <img src="static/images/intro_v12.svg" alt="MY ALT TEXT" />
+          <!-- <video poster="" id="tree" autoplay controls muted loop height="100%"> -->
+          <!-- Your video here -->
+          <!-- <source src="static/videos/banner_video.mp4" type="video/mp4" /> -->
+          <!-- </video> -->
           <h2 class="subtitle has-text-centered">
-            Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus
-            tellus, maximus vel lectus at, placerat pretium mi. Maecenas
-            dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut
-            maximus.
+            Our metric demonstrates automatic and reliable assessment of
+            perceptual alignment between condition and generated results (i.e.,
+            cherry-picking without humans) across text-to-image models,
+            diffusion models trained on specific domains such as Van Gogh,
+            InstructPix2Pix, ControlNet, and AudioLDM, but not limited to.
           </h2>
         </div>
       </div>
@@ -214,51 +218,12 @@
     </section>
     <!-- End paper abstract -->
 
-    <!-- Image carousel -->
-    <section class="hero is-small">
-      <div class="hero-body">
-        <div class="container">
-          <div id="results-carousel" class="carousel results-carousel">
-            <div class="item">
-              <!-- Your image here -->
-              <img src="static/images/carousel1.jpg" alt="MY ALT TEXT" />
-              <h2 class="subtitle has-text-centered">
-                First image description.
-              </h2>
-            </div>
-            <div class="item">
-              <!-- Your image here -->
-              <img src="static/images/carousel2.jpg" alt="MY ALT TEXT" />
-              <h2 class="subtitle has-text-centered">
-                Second image description.
-              </h2>
-            </div>
-            <div class="item">
-              <!-- Your image here -->
-              <img src="static/images/carousel3.jpg" alt="MY ALT TEXT" />
-              <h2 class="subtitle has-text-centered">
-                Third image description.
-              </h2>
-            </div>
-            <div class="item">
-              <!-- Your image here -->
-              <img src="static/images/carousel4.jpg" alt="MY ALT TEXT" />
-              <h2 class="subtitle has-text-centered">
-                Fourth image description.
-              </h2>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- End image carousel -->
-
     <!-- Youtube video -->
     <section class="hero is-small is-light">
       <div class="hero-body">
         <div class="container">
           <!-- Paper video. -->
-          <h2 class="title is-3">Video Presentation</h2>
+          <h2 class="title is-3">Background</h2>
           <div class="columns is-centered has-text-centered">
             <div class="column is-four-fifths">
               <div class="publication-video">
@@ -275,56 +240,168 @@
         </div>
       </div>
     </section>
+
+    <section class="hero is-small is-light">
+      <div class="hero-body">
+        <div class="container">
+          <!-- Paper video. -->
+          <h2 class="title is-3">Approach</h2>
+          <div class="columns is-centered has-text-centered">
+            <div class="column has-text-justified">
+              <img src="static/images/mthd.png" alt="MY ALT TEXT" />
+              <p>
+                We hypothesized that the conditional likelihood is biased by the
+                unconditional likelihood and validated this hypothesis through
+                experimentation. Consequently, we adopted the difference between
+                the conditional and unconditional likelihoods as a metric. The
+                likelihood was calculated by applying the instantaneous change
+                of variables formula to the DDIM ODE. The formula for CAS is
+                given by: \[ CAS(\mathbf{x},\mathbf{c},\theta) = \log
+                \frac{p_1(\mathbf{x}^{c}(1)|\mathbf{c})}{p_1(\mathbf{x}^{u}(1))}
+                - \int_0^1 \alpha'(t)\frac{\nabla_\mathbf{x} \cdot
+                \epsilon_{\theta}(\mathbf{x}^c(t), c, t) - \nabla_\mathbf{x}
+                \cdot \epsilon_{\theta}(\mathbf{x}^{u}(t), \emptyset,
+                t)}{2\alpha(t)\sqrt{1-\alpha(t)}}dt. \] The calculation of
+                \(\nabla_\mathbf{x} \cdot \epsilon_{\theta}(\mathbf{x}^c(t), c,
+                t)\) was performed using the Skilling-Hutchinson trace estimator
+                \(\mathbb{E}_{p(\mathbf{z})}[\mathbf{z}^\top\nabla_\mathbf{x}
+                \epsilon_\theta(\mathbf{x},t)\mathbf{z}]\). To improve inference
+                time, instead of calculating the gradient of
+                \(\epsilon_{\theta}\) through backward propagation, we
+                approximated it using \(\mathbf{z}^\top \nabla_\mathbf{x}
+                \epsilon_{\theta}(\mathbf{x}, t) \mathbf{z} \simeq
+                \mathbf{z}^\top\frac{\epsilon_{\theta}(\mathbf{x}+\sigma
+                \mathbf{z}, t)-\epsilon_{\theta}(\mathbf{x}, t)}{\sigma} =
+                \frac{1}{\sigma}
+                \mathbf{z}^\top(\epsilon_{\theta}(\mathbf{x}+\sigma \mathbf{z},
+                t) - \epsilon_{\theta}(\mathbf{x}, t))\). Additionally, we
+                utilized the Simpson_3_8 method in the integration process.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero is-small is-light">
+      <div class="hero-body">
+        <div class="container">
+          <!-- Paper video. -->
+          <h2 class="title is-3">Results</h2>
+          <div class="columns is-centered has-text-centered">
+            <div class="column has-text-justified">
+              <img src="static/images/pickscore_result.png" alt="MY ALT TEXT" />
+              <p>
+                Our experiments demonstrated the Conditional Alignment Score
+                (CAS)'s effectiveness across five distinct models, with a
+                particular focus on the T2I diffusion model fine-tuned in the
+                Van Gogh domain. CAS outperformed established baselines such as
+                CLIP Score, Human Preference Score, Image Reward, and Pick Score
+                by a significant margin, especially notable in the Van Gogh
+                dataset where it showed approximately 7.4% higher accuracy than
+                the next best method. This success underscores CAS's unique
+                ability to accurately measure style fidelity and text-to-image
+                (T2I) alignment without requiring additional model training. Our
+                method's robustness is further highlighted through experiments
+                utilizing negative weighting on prompts, effectively
+                demonstrating CAS's precision in evaluating domain-specific
+                styles. Remarkably, CAS achieved this superior performance
+                without relying on the extensive training datasets necessary for
+                other metrics, indicating its efficiency and potential for
+                broader application in generative modeling.
+              </p>
+            </div>
+            <div class="column has-text-justified">
+              <img
+                src="static/images/multimodal_result.png"
+                alt="MY ALT TEXT"
+              />
+              <p>
+                Extending our evaluation to additional modalities, including
+                InstructPix2Pix, ControlNet, and AudioLDM, reaffirmed CAS's
+                universal applicability. Human preference evaluations across
+                these modalities revealed a consistent preference for outputs
+                ranked highly by CAS, indicating its alignment with human
+                judgment even in ambiguous conditions. Specifically, the
+                experiments showed over 60% preference accuracy for CAS across
+                different input-output pairs, signifying its effectiveness in
+                capturing the nuanced preferences of human evaluators. The
+                results from modalities beyond image generation, such as
+                text-to-audio with AudioLDM, further validated the metric's
+                versatility. Additionally, in the context of InstructPix2Pix,
+                CAS's correlation with directional CLIP similarity provided
+                empirical evidence of its reliability in measuring alignment,
+                showcasing its capacity to serve as a comprehensive evaluation
+                tool for a wide range of diffusion models.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- End youtube video -->
 
     <!-- Video carousel -->
     <section class="hero is-small">
       <div class="hero-body">
         <div class="container">
-          <h2 class="title is-3">Another Carousel</h2>
+          <h2 class="title">Additional Result</h2>
           <div id="results-carousel" class="carousel results-carousel">
-            <div class="item item-video1">
-              <video
-                poster=""
-                id="video1"
-                autoplay
-                controls
-                muted
-                loop
-                height="100%"
-              >
-                <!-- Your video file here -->
-                <source src="static/videos/carousel1.mp4" type="video/mp4" />
-              </video>
+            <div class="item">
+              <!-- Your image here -->
+              <img src="static/images/result_1.png" alt="MY ALT TEXT" />
+              <h2 class="subtitle has-text-centered">
+                Text-to-image sample result
+              </h2>
             </div>
-            <div class="item item-video2">
-              <video
-                poster=""
-                id="video2"
-                autoplay
-                controls
-                muted
-                loop
-                height="100%"
-              >
-                <!-- Your video file here -->
-                <source src="static/videos/carousel2.mp4" type="video/mp4" />
-              </video>
+            <div class="item">
+              <!-- Your image here -->
+              <img src="static/images/result_2.png" alt="MY ALT TEXT" />
+              <h2 class="subtitle has-text-centered">
+                Text-to-image sample result
+              </h2>
             </div>
-            <div class="item item-video3">
-              <video
-                poster=""
-                id="video3"
-                autoplay
-                controls
-                muted
-                loop
-                height="100%"
-              >
-                \
-                <!-- Your video file here -->
-                <source src="static/videos/carousel3.mp4" type="video/mp4" />
-              </video>
+            <div class="item">
+              <!-- Your image here -->
+              <img src="static/images/result_3.png" alt="MY ALT TEXT" />
+              <h2 class="subtitle has-text-centered">
+                {Image, Instruction}-to-image sample result
+              </h2>
+            </div>
+            <div class="item">
+              <!-- Your image here -->
+              <img src="static/images/result_4.png" alt="MY ALT TEXT" />
+              <h2 class="subtitle has-text-centered">
+                {Image, Instruction}-to-image sample result
+              </h2>
+            </div>
+            <div class="item">
+              <!-- Your image here -->
+              <img src="static/images/result_5.png" alt="MY ALT TEXT" />
+              <h2 class="subtitle has-text-centered">
+                {Canny Edge, Prompt}-to-image sample result
+              </h2>
+            </div>
+            <div class="item">
+              <!-- Your image here -->
+              <img src="static/images/result_6.png" alt="MY ALT TEXT" />
+              <h2 class="subtitle has-text-centered">
+                {Canny Edge, Prompt}-to-image sample result
+              </h2>
+            </div>
+            <div class="item">
+              <!-- Your image here -->
+              <img src="static/images/result_7.png" alt="MY ALT TEXT" />
+              <h2 class="subtitle has-text-centered">
+                {Scribble, Prompt}-to-image sample result
+              </h2>
+            </div>
+            <div class="item">
+              <!-- Your image here -->
+              <img src="static/images/result_8.png" alt="MY ALT TEXT" />
+              <h2 class="subtitle has-text-centered">
+                {Scribble, Prompt}-to-image sample result
+              </h2>
             </div>
           </div>
         </div>
@@ -332,24 +409,18 @@
     </section>
     <!-- End video carousel -->
 
-    <!-- Paper poster -->
-    <section class="hero is-small is-light">
-      <div class="hero-body">
-        <div class="container">
-          <h2 class="title">Poster</h2>
-
-          <iframe src="static/pdfs/sample.pdf" width="100%" height="550">
-          </iframe>
-        </div>
-      </div>
-    </section>
-    <!--End paper poster -->
-
     <!--BibTex citation -->
     <section class="section" id="BibTeX">
       <div class="container is-max-desktop content">
         <h2 class="title">BibTeX</h2>
-        <pre><code>BibTex Code Here</code></pre>
+        <pre><code>@inproceedings{
+  hong2024CAS,
+  title={CAS: A Probability-based Approach for Universal Condition Alignment Score},
+  author={Chunsan Hong and Byunghee Cha and Tae-Hyun Oh},
+  booktitle={International Conference on Learning Representations},
+  year={2024},
+  url={https://openreview.net/forum?id=E78OaH2s3f}
+}</code></pre>
       </div>
     </section>
     <!--End BibTex citation -->
